@@ -1,7 +1,7 @@
 'use strict'
 
 const db = require('../server/db')
-const {User} = require('../server/db/models')
+const {User, Story, Sentence} = require('../server/db/models')
 
 async function seed() {
   await db.sync({force: true})
@@ -12,7 +12,41 @@ async function seed() {
     User.create({email: 'murphy@email.com', password: '123'})
   ])
 
-  console.log(`seeded ${users.length} users`)
+  const testContent1 = ["This is test story 1.", "It will include the first story sentences that have been voted upon by users"]
+  const testContent2 = ["This is test story 2.", "It will include the second story sentences that have been voted upon by users"]
+  const testContent3 = ["This is test story 3.", "It will include the third story sentences that have been voted upon by users"]
+  
+
+  const stories = await Promise.all([
+    Story.create({title: 'Test Story 1', content: testContent1, complete: true}),
+    Story.create({title: 'Test Story 2', content: testContent2, complete: true }),
+    Story.create({title: 'Test Story 3', content: testContent3, complete: false}),
+  ])
+
+  const testWords1 = "This is test story 1."
+  const testWords2 = "It will include the first story sentences that have been voted upon by users"
+  const testWords3 = "This is test story 2."
+  const testWords4 = "It will include the second story sentences that have been voted upon by users"
+  const testWords5 = "This is test story 3."
+  const testWords6 = "It will include the third story sentences that have been voted upon by users"
+  const testWords7 = "This was outvoted"
+  
+
+  const sentences = await Promise.all([
+    Sentence.create({words: testWords1, votes: 15, complete: true, storyId: 1}),
+    Sentence.create({words: testWords7, votes: 10, complete: true, storyId: 1}),
+    Sentence.create({words: testWords2, votes: 14, complete: true, storyId: 1}),
+    Sentence.create({words: testWords7, votes: 8, complete: true, storyId: 1}),
+    Sentence.create({words: testWords3, votes: 11, complete: true, storyId: 2}),
+    Sentence.create({words: testWords7, votes: 5, complete: true, storyId: 2}),
+    Sentence.create({words: testWords4, votes: 9, complete: true, storyId: 2}),
+    Sentence.create({words: testWords7, votes: 8, complete: true, storyId: 2}),
+    Sentence.create({words: testWords5, votes: 12, complete: true, storyId: 3}),
+    Sentence.create({words: testWords7, votes: 10, complete: true, storyId: 3}),
+    Sentence.create({words: testWords6, votes: 11, complete: false, storyId: 3}),
+    Sentence.create({words: testWords7, votes: 8, complete: false, storyId: 3})
+  ])
+
   console.log(`seeded successfully`)
 }
 

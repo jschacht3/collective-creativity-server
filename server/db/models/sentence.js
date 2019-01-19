@@ -7,6 +7,9 @@ const Sentence = db.define('sentence', {
     },
     votes: {
       type: Sequelize.INTEGER
+    },
+    complete: {
+      type: Sequelize.BOOLEAN
     }
 })
   

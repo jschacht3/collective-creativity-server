@@ -7,6 +7,9 @@ const Story = db.define('story', {
     },
     content: {
       type: Sequelize.ARRAY(Sequelize.TEXT)
+    }, 
+    complete: {
+      type: Sequelize.BOOLEAN
     }
 })
   
