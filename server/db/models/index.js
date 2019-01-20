@@ -1,10 +1,10 @@
 const User = require('./user')
-const Sentence = require ('./sentence')
+const Fragment = require ('./fragment')
 const Story = require('./story')
 
-Sentence.belongsTo(Story)
-Story.hasMany(Sentence)
+Fragment.belongsTo(Story)
+Story.hasMany(Fragment)
 
 module.exports = {
-  User, Sentence, Story
+  User, Fragment, Story
 }

@@ -1,5 +1,5 @@
 const router = require('express').Router()
-const {Story, Sentence} = require('../db/models')
+const {Story, Fragment} = require('../db/models')
 
 router.get('/all', async (req, res, next) => {
     try {
@@ -21,12 +21,63 @@ router.get('/active', async (req, res, next) => {
   }
 })
 
-router.get('/active/sentences', async (req, res, next) => {
+router.get('/active/fragments', async (req, res, next) => {
   try {
-    const sentences = await Sentence.findAll({
+
+    const fragments = await Fragment.findAll({
       where: {complete: false}
     })
-    res.json(sentences)
+
+    res.json(fragments)
+
+  } catch (err) {
+    next(err)
+  }
+})
+
+router.put('/active/fragment/:id', async (req, res, next) => {
+  
+  try {
+    const story = await Story.findOne({
+      where: {complete: false}
+    })
+
+    res.json(story)
+  } catch (err) {
+    next(err)
+  }
+  
+})
+
+
+//completing story
+router.put('/active/complete', async (req, res, next) => {
+  try {
+
+    const story = await Story.findOne({
+      where: {complete: false}
+    })
+
+    if (story) {
+      const completeStory = await story.update({
+        complete: true
+      })
+    }
+    
+    const fragments = await Fragment.findAll({
+      where: {complete: false}
+    })
+
+    if (fragments){
+      for (let i = 0; i < fragments.length; i++) {
+        await fragments[i].update({
+          complete: true
+        })
+      }
+    }
+
+    res.json("Story Complete")
+
   } catch (err) {
     next(err)
   }

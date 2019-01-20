@@ -1,7 +1,7 @@
 const Sequelize = require('sequelize')
 const db = require('../db')
 
-const Sentence = db.define('sentence', {
+const Fragment = db.define('fragment', {
     words: {
       type: Sequelize.STRING,
     },
@@ -13,4 +13,4 @@ const Sentence = db.define('sentence', {
     }
 })
   
-  module.exports = Sentence
+  module.exports = Fragment
