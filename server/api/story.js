@@ -40,7 +40,7 @@ router.put('/active/fragment/:id', async (req, res, next) => {
   
   try {
     const fragment = await Fragment.findById(req.params.id)
-    const updatedFragment = await fragment.update({votes: votes + 1})
+    const updatedFragment = await fragment.update({votes: fragment.votes + 1})
     res.json(updatedFragment)
     
   } catch (err) {
