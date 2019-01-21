@@ -10,12 +10,13 @@ router.get('/all', async (req, res, next) => {
     }
 })
 
-router.get('/active', async (req, res, next) => {
+router.get('/current', async (req, res, next) => {
   try {
+    console.log("IS REQUEST COMING IN")
     const story = await Story.findOne({
       where: {complete: false}
     })
-    res.json(story)
+    res.send(story)
   } catch (err) {
     next(err)
   }
