@@ -6,7 +6,8 @@ const Fragment = db.define('fragment', {
       type: Sequelize.STRING,
     },
     votes: {
-      type: Sequelize.INTEGER
+      type: Sequelize.INTEGER,
+      default: 1
     },
     complete: {
       type: Sequelize.BOOLEAN

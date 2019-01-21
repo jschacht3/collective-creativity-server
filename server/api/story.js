@@ -21,7 +21,7 @@ router.get('/current', async (req, res, next) => {
   }
 })
 
-router.get('/active/fragments', async (req, res, next) => {
+router.get('/current/fragments', async (req, res, next) => {
   try {
 
     const fragments = await Fragment.findAll({
@@ -35,19 +35,32 @@ router.get('/active/fragments', async (req, res, next) => {
   }
 })
 
+//Add vote 
 router.put('/active/fragment/:id', async (req, res, next) => {
   
   try {
-    const story = await Story.findOne({
-      where: {complete: false}
-    })
-
-    res.json(story)
+    const fragment = await Fragment.findById(req.params.id)
+    const updatedFragment = await fragment.update({votes: votes + 1})
+    res.json(updatedFragment)
+    
   } catch (err) {
     next(err)
   }
-  
 })
+
+// router.put('/active/fragment/:id', async (req, res, next) => {
+  
+//   try {
+//     const story = await Story.findOne({
+//       where: {complete: false}
+//     })
+
+//     res.json(story)
+//   } catch (err) {
+//     next(err)
+//   }
+  
+// })
 
 
 //completing story

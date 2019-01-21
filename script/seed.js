@@ -47,7 +47,7 @@ async function seed() {
     Fragment.create({words: testWords7 + ' 8', votes: 7, complete: true, storyId: 2}),
     Fragment.create({words: testWords7 + ' 9', votes: 6, complete: true, storyId: 2}),
 
-    Fragment.create({words: testWords6, votes: 11, complete: false, storyId: 2}),
+    Fragment.create({words: testWords6, votes: 11, complete: true, storyId: 2}),
     Fragment.create({words: testWords7 + ' 10', votes: 8, complete: true, storyId: 2}),
     Fragment.create({words: testWords7 + ' 11', votes: 7, complete: true, storyId: 2}),
     Fragment.create({words: testWords7 + ' 12', votes: 6, complete: true, storyId: 2}),
