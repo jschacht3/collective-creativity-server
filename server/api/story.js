@@ -57,14 +57,19 @@ router.put('/current/fragment/:id', async (req, res, next) => {
   }
 })
 
-router.post('/current/fragment/new/:storyId', async (req, res, next) => {
+router.post('/current/fragment/new/', async (req, res, next) => {
 
-  const words = req.body.words
+  const words = req.body.submission
   
   try {
+
+    const currentStory = await Story.findOne({
+      where: {complete: false}
+    })
+
     const fragment = await Fragment.create({
       words,
-      storyId: req.params.storyId
+      storyId: currentStory.id
     })
 
     res.json(fragment)
