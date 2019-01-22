@@ -12,19 +12,10 @@ router.get('/all', async (req, res, next) => {
 
 router.get('/current', async (req, res, next) => {
   try {
-    const story = await Story.findOne({
+    const story = await Story.findOrCreate({
       where: {complete: false}
     })
     res.json(story)
-  } catch (err) {
-    next(err)
-  }
-})
-
-router.post('/current', async (req, res, next) => {
-  try {
-    const newStory = await Story.create()
-    res.json(Story)
   } catch (err) {
     next(err)
   }
@@ -57,11 +48,12 @@ router.put('/current/fragment/:id', async (req, res, next) => {
   }
 })
 
-router.post('/current/fragment/new/', async (req, res, next) => {
-
-  const words = req.body.submission
-  
+router.post('/current/fragment/new', async (req, res, next) => {
+ 
   try {
+
+    const words = req.body.submission
+    console.log("REQ.BODY ", req.body)
 
     const currentStory = await Story.findOne({
       where: {complete: false}
@@ -69,7 +61,9 @@ router.post('/current/fragment/new/', async (req, res, next) => {
 
     const fragment = await Fragment.create({
       words,
-      storyId: currentStory.id
+      storyId: currentStory.id,
+      votes: 1, 
+      complete: false
     })
 
     res.json(fragment)
@@ -80,33 +74,30 @@ router.post('/current/fragment/new/', async (req, res, next) => {
 })
 
 
-//completing story
-router.put('/current/complete', async (req, res, next) => {
-  try {
+//completing vote
+router.put('/current/vote/complete/:id', async (req, res, next) => {
 
+    try {
+      
     const story = await Story.findOne({
       where: {complete: false}
     })
 
-    if (story) {
-      const completeStory = await story.update({
-        complete: true
+    const winningFragment = await Fragment.findById(req.params.id)  
+   
+    if (story.title === null) {
+      await story.update({
+        title: winningFragment.words
       })
     }
-    
-    const fragments = await Fragment.findAll({
-      where: {complete: false}
-    })
 
-    if (fragments){
-      for (let i = 0; i < fragments.length; i++) {
-        await fragments[i].update({
-          complete: true
-        })
+    const fragments = await Fragment.update({
+      complete: true}, {
+        where: {complete: false}
       }
-    }
+    )
 
-    res.json("Story Complete")
+    res.json(winningFragment)
 
   } catch (err) {
     next(err)
