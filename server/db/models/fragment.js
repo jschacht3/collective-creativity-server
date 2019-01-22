@@ -10,7 +10,8 @@ const Fragment = db.define('fragment', {
       default: 1
     },
     complete: {
-      type: Sequelize.BOOLEAN
+      type: Sequelize.BOOLEAN,
+      default: false
     }
 })
   

@@ -36,7 +36,7 @@ router.get('/current/fragments', async (req, res, next) => {
 })
 
 //Add vote 
-router.put('/active/fragment/:id', async (req, res, next) => {
+router.put('/current/fragment/:id', async (req, res, next) => {
   
   try {
     const fragment = await Fragment.findById(req.params.id)
@@ -48,19 +48,21 @@ router.put('/active/fragment/:id', async (req, res, next) => {
   }
 })
 
-// router.put('/active/fragment/:id', async (req, res, next) => {
-  
-//   try {
-//     const story = await Story.findOne({
-//       where: {complete: false}
-//     })
+router.post('/current/fragment/', async (req, res, next) => {
 
-//     res.json(story)
-//   } catch (err) {
-//     next(err)
-//   }
+  const words = req.body.words
   
-// })
+  try {
+    const fragment = await Fragment.Create({
+      words
+    })
+
+    res.json(story)
+  } catch (err) {
+    next(err)
+  }
+  
+})
 
 
 //completing story
@@ -95,8 +97,5 @@ router.put('/active/complete', async (req, res, next) => {
     next(err)
   }
 })
-
-
-
 
 module.exports = router
