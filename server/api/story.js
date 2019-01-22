@@ -21,6 +21,15 @@ router.get('/current', async (req, res, next) => {
   }
 })
 
+router.post('/current', async (req, res, next) => {
+  try {
+    const newStory = await Story.create()
+    res.json(Story)
+  } catch (err) {
+    next(err)
+  }
+})
+
 router.get('/current/fragments', async (req, res, next) => {
   try {
 
@@ -48,25 +57,26 @@ router.put('/current/fragment/:id', async (req, res, next) => {
   }
 })
 
-router.post('/current/fragment/', async (req, res, next) => {
+router.post('/current/fragment/new/:storyId', async (req, res, next) => {
 
   const words = req.body.words
   
   try {
-    const fragment = await Fragment.Create({
-      words
+    const fragment = await Fragment.create({
+      words,
+      storyId: req.params.storyId
     })
 
-    res.json(story)
+    res.json(fragment)
+
   } catch (err) {
     next(err)
   }
-  
 })
 
 
 //completing story
-router.put('/active/complete', async (req, res, next) => {
+router.put('/current/complete', async (req, res, next) => {
   try {
 
     const story = await Story.findOne({
