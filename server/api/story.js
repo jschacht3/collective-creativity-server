@@ -10,12 +10,29 @@ router.get('/all', async (req, res, next) => {
     }
 })
 
+router.get('/content', async (req, res, next) => {
+  try {
+
+    const currentStory =  await Story.findOne({
+      where: {complete: false}
+    })
+
+    const fragments = await Fragment.findAll({
+      where: {complete: true, winner: true, storyId: currentStory.id}
+    })
+    res.json(fragments)
+  } catch (err) {
+    next(err)
+  }
+})
+
 router.get('/current', async (req, res, next) => {
   try {
     const story = await Story.findOrCreate({
       where: {complete: false}
     })
-    res.json(story)
+
+    res.json(story[0])
   } catch (err) {
     next(err)
   }
@@ -96,6 +113,10 @@ router.put('/current/vote/complete/:id', async (req, res, next) => {
         where: {complete: false}
       }
     )
+
+    await winningFragment.update({
+      winner: true
+    })
 
     res.json(winningFragment)
 

@@ -12,6 +12,10 @@ const Fragment = db.define('fragment', {
     complete: {
       type: Sequelize.BOOLEAN,
       default: false
+    },
+    winner: {
+      type: Sequelize.BOOLEAN,
+      default: false
     }
 })
   
