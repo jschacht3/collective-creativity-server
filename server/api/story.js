@@ -48,8 +48,7 @@ router.get('/current/fragments', async (req, res, next) => {
     next(err)
   }
 })
-
-//Add vote 
+ 
 router.put('/current/fragment/:id', async (req, res, next) => {
   
   try {
@@ -85,8 +84,6 @@ router.post('/current/fragment/new', async (req, res, next) => {
   }
 })
 
-
-//completing vote
 router.put('/current/vote/complete/:id', async (req, res, next) => {
 
     try {
