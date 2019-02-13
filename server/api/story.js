@@ -13,13 +13,10 @@ router.get('/all', async (req, res, next) => {
 router.get('/content', async (req, res, next) => {
   try {
 
-    const currentStory =  await Story.findOne({
-      where: {complete: false}
+    const fragments = await Fragment.findAll({
+      where: {complete: true, winner: true}
     })
 
-    const fragments = await Fragment.findAll({
-      where: {complete: true, winner: true, storyId: currentStory.id}
-    })
     res.json(fragments)
   } catch (err) {
     next(err)
@@ -68,11 +65,9 @@ router.put('/current/fragment/:id', async (req, res, next) => {
 router.post('/current/fragment/new', async (req, res, next) => {
  
   try {
-
     const words = req.body.submission
-    console.log("REQ.BODY ", req.body)
 
-    const currentStory = await Story.findOne({
+    const currentStory = await Story.findOrCreate({
       where: {complete: false}
     })
 
@@ -108,8 +103,8 @@ router.put('/current/vote/complete/:id', async (req, res, next) => {
       })
     }
 
-    const fragments = await Fragment.update({
-      complete: true}, {
+    const fragments = await Fragment.update({complete: true}, 
+      {
         where: {complete: false}
       }
     )
