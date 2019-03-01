@@ -29,3 +29,19 @@ router.get('/:id', async (req, res, next) => {
     next(err)
   }
 })
+
+router.post('/profile', async (req, res, next) => {
+ 
+  try {
+    const profile = req.body.submission
+
+    const user = await User.create({
+      profile
+    })
+
+    res.json(user)
+
+  } catch (err) {
+    next(err)
+  }
+})
